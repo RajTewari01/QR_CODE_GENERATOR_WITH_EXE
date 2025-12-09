@@ -1,61 +1,60 @@
 <div align="center">
 
-#  █░█ █░░ ▀█▀ █ █▀▄▀█ ▄▀█ ▀█▀ █▀▀
-#  █▄█ █▄▄ ░█░ █ █░▀░█ █▀█ ░█░ ██▄
-#  
-#  Q R   G E N E R A T O R 
+<pre>
+██╗   ██╗██╗  ████████╗██╗███╗   ███╗ █████╗ ████████╗███████╗
+██║   ██║██║  ╚══██╔══╝██║████╗ ████║██╔══██╗╚══██╔══╝██╔════╝
+██║   ██║██║     ██║   ██║██╔████╔██║███████║   ██║   █████╗  
+██║   ██║██║     ██║   ██║██║╚██╔╝██║██╔══██║   ██║   ██╔══╝  
+╚██████╔╝███████╗██║   ██║██║ ╚═╝ ██║██║  ██║   ██║   ███████╗
+ ╚═════╝ ╚══════╝╚═╝   ╚═╝╚═╝     ╚═╝╚═╝  ╚═╝   ╚═╝   ╚══════╝
+ 
+  Q R   C O D E   G E N E R A T O R   P R O
+</pre>
 
-[![GitHub license](https://img.shields.io/github/license/RajTewari01/QR_CODE_GENERATOR_WITH_EXE?style=flat-square)](https://github.com/RajTewari01/QR_CODE_GENERATOR_WITH_EXE/blob/main/LICENSE)
-[![Platform](https://img.shields.io/badge/Platform-Windows-blue?style=flat-square&logo=windows)](https://github.com/RajTewari01)
-[![Made with Python](https://img.shields.io/badge/Made%20with-Python-yellow?style=flat-square&logo=python)](https://www.python.org/)
+[![License](https://img.shields.io/github/license/RajTewari01/QR_CODE_GENERATOR_WITH_EXE?style=for-the-badge&color=blue)](https://github.com/RajTewari01/QR_CODE_GENERATOR_WITH_EXE/blob/main/LICENSE)
+[![GUI Framework](https://img.shields.io/badge/GUI-PyQt5-41cd52?style=for-the-badge&logo=qt)](https://pypi.org/project/PyQt5/)
+[![Build](https://img.shields.io/badge/Build-PyInstaller-red?style=for-the-badge&logo=python)](https://pyinstaller.org/)
+[![Platform](https://img.shields.io/badge/Platform-Windows-0078D6?style=for-the-badge&logo=windows)](https://github.com/RajTewari01)
 
 <br>
 
-<b>A powerful, offline-capable QR Code Generator bundled as a standalone executable.</b><br>
-<i>No internet required. No complex installation. Just click and generate.</i>
+<h3><b>The Definitive Offline QR Solution.</b></h3>
+<i>Built with the power of PyQt for a modern, responsive interface.</i>
 
-<br>
-
-[<kbd> <br> ⬇️ Download Latest Release <br> </kbd>](https://github.com/RajTewari01/QR_CODE_GENERATOR_WITH_EXE)
+<p>
+<a href="#-workflow-architecture">View Architecture</a> •
+<a href="#-build-executable">Build App</a> •
+<a href="#-features">Features</a>
+</p>
 
 </div>
 
 ---
 
-## 🚀 Features
+## 🏗️ Workflow Architecture
 
-This isn't just a basic generator. **UltimateQR** handles complex data types with a custom-built GUI.
+This application utilizes the **PyQt Event Loop** to handle user inputs asynchronously. The separation of GUI signals and the generation logic ensures the app remains freezing-free during rendering.
 
-| Feature | Description |
-| :--- | :--- |
-| 🔗 **Deep Linking** | Generate QRs for websites, deep links, and social media. |
-| 📶 **Wi-Fi Config** | Create QR codes that automatically connect users to Wi-Fi. |
-| 👤 **vCards** | Share contact details instantly (Name, Phone, Email). |
-| 🎨 **Custom Styling** | High-quality SVG and PNG output generation. |
-| ⚡ **Standalone** | Runs as a portable `.exe` (No Python installation needed). |
-| 🛠 **Console-Free** | Clean GUI experience without popup command prompts. |
+```mermaid
+graph TD
+    subgraph "PyQt User Interface"
+    A[Start App] --> B{User Input}
+    B -->|Link/Text| C[Deep Link Module]
+    B -->|SSID/Pass| D[Wi-Fi Config Module]
+    B -->|Contact Info| E[vCard Module]
+    end
 
----
+    subgraph "Backend Logic"
+    C & D & E -->|Signal Emitted| F[Data Validator]
+    F --> G[QR Engine (Python qrcode)]
+    G --> H[Pillow Image Renderer]
+    end
 
-## 🛠️ Installation & Usage
-
-### Option 1: Run the Executable (Recommended)
-1. Download the file **`RAJ_UltimateQR.exe`** from the repository.
-2. Double-click to run.
-3. *Note: If Windows Defender warns you, it is because the app is not signed. You can click "Run Anyway".*
-
-### Option 2: Run from Source
-If you prefer to run the Python script directly:
-
-```bash
-# Clone the repository
-git clone [https://github.com/RajTewari01/QR_CODE_GENERATOR_WITH_EXE.git](https://github.com/RajTewari01/QR_CODE_GENERATOR_WITH_EXE.git)
-
-# Navigate to the directory
-cd QR_CODE_GENERATOR_WITH_EXE
-
-# Install requirements (if any)
-pip install qrcode pillow
-
-# Run the app
-python qr.py
+    subgraph "Output Pipeline"
+    H -->|Pixmap| I[Update GUI Preview]
+    H -->|Binary Write| J[Save .PNG/.SVG to Disk]
+    end
+    
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style G fill:#bbf,stroke:#333,stroke-width:2px
+    style I fill:#bfb,stroke:#333,stroke-width:2px
