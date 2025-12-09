@@ -21,19 +21,12 @@
 <h3><b>The Definitive Offline QR Solution.</b></h3>
 <i>Built with the power of PyQt for a modern, responsive interface.</i>
 
-<p>
-<a href="#-workflow-architecture">View Architecture</a> •
-<a href="#-build-executable">Build App</a> •
-<a href="#-features">Features</a>
-</p>
+<br>
+<hr>
 
-</div>
+<h2>🏗️ Workflow Architecture</h2>
 
----
-
-## 🏗️ Workflow Architecture
-
-This application utilizes the **PyQt Event Loop** to handle user inputs asynchronously. The separation of GUI signals and the generation logic ensures the app remains freezing-free during rendering.
+<p>This application utilizes the <b>PyQt Event Loop</b> to handle user inputs asynchronously.<br>The separation of GUI signals and the generation logic ensures the app remains freezing-free.</p>
 
 ```mermaid
 graph TD
@@ -54,7 +47,3 @@ graph TD
     H -->|Pixmap| I[Update GUI Preview]
     H -->|Binary Write| J[Save .PNG/.SVG to Disk]
     end
-    
-    style A fill:#f9f,stroke:#333,stroke-width:2px
-    style G fill:#bbf,stroke:#333,stroke-width:2px
-    style I fill:#bfb,stroke:#333,stroke-width:2px
