@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2024 Biswadeep Tewari
+Copyright (c) 2024-2026 Biswadeep Tewari
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,24 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
----
-
-### Additional Explanatory Notes on Licensing
-
-The MIT License enables broad, uninhibited sharing of the software. To make things explicit, by using this software, you are entitled to the following capabilities, restrictions, and limitations:
-
-#### Permissions
-- **Commercial Use:** You may use this software and its derivatives for commercial purposes.
-- **Modification:** You may freely alter, optimize, or append new functionalities to the core source code.
-- **Distribution:** You may distribute, package, and even sell the modified source code or compiled executables.
-- **Private Use:** You may use and modify the software for internal or private purposes without ever distributing your source code.
-
-#### Conditions
-- **License and Copyright Notice:** You must include a copy of the original MIT license and copyright notice in all copies or substantial portions of the software. If you distribute this as an executable, placing the text in an accessible "About" screen or accompanied text file fulfills this condition.
-
-#### Limitations
-- **Liability:** The creator and contributors of the code cannot be held legally liable for any damages, security vulnerabilities, bugs, or system faults arising from the use of this software.
-- **Warranty:** The software is provided "AS IS." There is no warranty implied regarding fitness for any particular purpose.
-
-Enjoy modifying the Galaxy QR Core Engine to its maximum potential!

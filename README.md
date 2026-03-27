@@ -1,299 +1,270 @@
 <div align="center">
 
-# 🌌 GALAXY QR CORE 🌌
+# Galaxy QR Core
 
-![Header](https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=300&section=header&text=Galaxy%20QR%20Core&fontSize=80&fontColor=fff&animation=twinkling&fontAlignY=35&desc=Next-Generation%20QR%20Code%20Generation&descAlignY=55&descSize=25)
+**A desktop QR code generator built with PyQt5, supporting 10 data protocols, 4 gradient types, and 10 switchable UI themes.**
 
-### ✨ *Cinematic Gradient QR Codes Powered by Space-Age Technology* ✨
-
-[![Python](https://img.shields.io/badge/Python_3.8+-3776AB?style=for-the-badge&logo=python&logoColor=FFD43B)](https://python.org)
-[![PyQt5](https://img.shields.io/badge/PyQt5-41CD52?style=for-the-badge&logo=qt&logoColor=white)](https://pypi.org/project/PyQt5/)
-[![License](https://img.shields.io/badge/License-MIT-00F7FF?style=for-the-badge)](LICENSE)
-[![Builds](https://img.shields.io/badge/Cross--Platform-Ready-00FF41?style=for-the-badge)]()
-
-[🚀 Quick Start](#-quick-start) • [✨ Features](#-features) • [📡 Protocols](#-supported-protocols) • [🤝 Contribute](#-contribute)
-
-*Introducing an all-new professional architecture with an Apple-style Frameless Glassmorphism UI.*
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://python.org)
+[![PyQt5](https://img.shields.io/badge/framework-PyQt5-41CD52.svg)](https://pypi.org/project/PyQt5/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![CI](https://img.shields.io/badge/CI-GitHub_Actions-2088FF.svg)](.github/workflows/build.yml)
 
 </div>
 
 ---
 
-<div align="center">
-<img src="https://capsule-render.vercel.app/api?type=rect&color=gradient&customColorList=6,11,20&height=3" alt="Divider"/>
-</div>
+## What It Does
 
-## 🎬 The Core Experience
+Galaxy QR Core generates styled QR codes with gradient color masks and rounded modules. It runs entirely offline—no network calls, no telemetry, no cloud dependencies.
 
-Delivering top-grade QR codes with cinematic gradients in a beautifully designed framework. Developed for both modern aesthetic appeal and offline productivity. Whether you need a simple vCard or automated Geo-Coordinates padding, the Quantum Processor handles it gracefully.
+**Supported data types:** URL, Wi-Fi, Plain Text, vCard, SMS, Email, WhatsApp, YouTube, UPI, Geo Coordinates.
+
+**Gradient options:** Radial, Vertical, Horizontal, Square — each with configurable background, core, and edge colors.
 
 ---
 
-## 🎬 Application Workflow
+## Architecture
 
-<div align="center">
-<img src="https://capsule-render.vercel.app/api?type=cylinder&color=gradient&customColorList=6,11,20&height=100&section=header&text=System%20Flow&fontSize=40&fontColor=fff&animation=fadeIn" alt="System Flow"/>
-</div>
+The codebase follows a strict layered pipeline. Each concern lives in its own module under `src/`.
 
-```mermaid
-graph TB
-    START([🚀 Launch Galaxy QR])
-    
-    subgraph INPUT [" 📡 DATA INPUT LAYER "]
-        PROTOCOL{Select Protocol Type}
-        URL[🔗 Website/URL]
-        WIFI[📶 Wi-Fi Config]
-        TEXT[📝 Plain Text]
-        VCARD[👤 vCard Contact]
-        SMS[💬 SMS Message]
-        EMAIL[📧 Email]
-        WHATSAPP[📱 WhatsApp]
-        YOUTUBE[🎥 YouTube]
-        UPI[💳 UPI Payment]
-        GEO[🌍 Geo Location]
-    end
-    
-    subgraph CUSTOM [" 🎨 CUSTOMIZATION ENGINE "]
-        GRADIENT[🌈 Gradient Selection<br>Radial / Vertical / Horizontal / Square]
-        COLORS[🎭 Color Palette<br>Background / Core / Edge]
-        STYLE[✨ Module Design<br>Rounded / Sharp / Custom]
-    end
-    
-    subgraph PROCESS [" ⚛️ QUANTUM PROCESSOR "]
-        VALIDATE[🛡️ Input Validation]
-        FORMAT[🔬 Data Formatting]
-        GENERATE[💫 QR Generation<br>High Error Correction]
-        RENDER[🌈 Gradient Rendering]
-    end
-    
-    subgraph OUTPUT [" 💾 OUTPUT SYSTEM "]
-        PREVIEW[👁️ Live Preview]
-        SAVE[📦 Export Options<br>PNG / SVG / High-Res]
-    end
-    
-    DONE([🎉 QR Code Ready!])
-    
-    START --> PROTOCOL
-    PROTOCOL --> URL & WIFI & TEXT & VCARD & SMS & EMAIL & WHATSAPP & YOUTUBE & UPI & GEO
-    URL & WIFI & TEXT & VCARD & SMS & EMAIL & WHATSAPP & YOUTUBE & UPI & GEO --> GRADIENT
-    GRADIENT --> COLORS
-    COLORS --> STYLE
-    STYLE --> VALIDATE
-    VALIDATE --> FORMAT
-    FORMAT --> GENERATE
-    GENERATE --> RENDER
-    RENDER --> PREVIEW
-    PREVIEW --> SAVE
-    SAVE --> DONE
 ```
-
----
-
-## 🏗️ System Architecture
-
-<div align="center">
-<img src="https://capsule-render.vercel.app/api?type=cylinder&color=gradient&customColorList=6,11,20&height=100&section=header&text=Core%20Architecture&fontSize=40&fontColor=fff&animation=fadeIn" alt="Architecture"/>
-</div>
+src/
+├── main.py            # Entrypoint. Parses CLI args, boots QApplication.
+├── themes.py          # Theme registry. 10 color palettes as dicts.
+├── engine.py          # QR logic. Protocol formatting + image generation.
+├── ui_components.py   # Reusable widgets: title bar, glass frame, buttons.
+└── runner.py          # Main window. Wires engine ↔ UI ↔ themes.
+```
 
 ```mermaid
 graph LR
-    subgraph UI [" 🎮 USER INTERFACE LAYER "]
-        GUI[Frameless Window<br>macOS Glass Design]
-        CONTROLS[Dynamic Controls<br>Smooth Input Fields]
-        COLORPICK[Color Core System<br>RGB Selection]
-        CANVAS[Preview Canvas<br>Real-time Display]
-    end
-    
-    subgraph LOGIC [" 🧠 BUSINESS LOGIC CORE "]
-        QRLOGIC[QR Logic Engine]
-        FORMATTER[Protocol Formatter<br>10+ Data Types]
-        GENERATOR[Image Generator<br>Gradient Engine]
-    end
-    
-    subgraph LIBS [" 📚 LIBRARY STACK "]
-        PYQT[PyQt5<br>GUI Framework]
-        QRCODE[qrcode<br>QR Engine]
-        PILLOW[Pillow<br>Image Processing]
-    end
-    
-    subgraph RENDER [" 🎨 RENDERING PIPELINE "]
-        MASKS[Gradient Masks<br>4 Types]
-        DRAWER[Module Drawer<br>Rounded Style]
-        CONVERTER[Format Converter<br>PIL to QPixmap]
-    end
-    
-    GUI --> CONTROLS
-    CONTROLS --> FORMATTER
-    COLORPICK --> GENERATOR
-    FORMATTER --> GENERATOR
-    GENERATOR --> MASKS
-    MASKS --> DRAWER
-    DRAWER --> CONVERTER
-    CONVERTER --> CANVAS
-    
-    PYQT -.->|Powers| GUI
-    QRCODE -.->|Engine| GENERATOR
-    PILLOW -.->|Processing| CONVERTER
+    A[main.py] -->|--theme flag| B[themes.py]
+    A --> C[runner.py]
+    C --> D[engine.py]
+    C --> E[ui_components.py]
+    E --> C
+    D -->|PIL Image| C
+    B -->|palette dict| C
+```
+
+### Data Flow
+
+```mermaid
+graph TD
+    A[User Input] --> B[Protocol Selection]
+    B --> C[engine.format_data]
+    C --> D[Encoded String]
+    D --> E[engine.generate_image]
+    E --> F[qrcode.QRCode + StyledPilImage]
+    F --> G[Gradient Mask Applied]
+    G --> H[PIL Image]
+    H --> I[Convert to QPixmap]
+    I --> J[Display in Preview Label]
+```
+
+### UI Component Tree
+
+```mermaid
+graph TD
+    MW[GalaxyWindow - QMainWindow] --> TB[CustomTitleBar]
+    MW --> GF[GlassFrame]
+    TB --> TC[TrafficLightButton x3]
+    TB --> TL[Title QLabel]
+    GF --> LP[Left Panel]
+    GF --> RP[Right Panel]
+    LP --> CM[QComboBox - Protocol]
+    LP --> CG[QComboBox - Gradient]
+    LP --> CB[Color Buttons x3]
+    RP --> IL[Dynamic Input Fields]
+    RP --> PV[Preview QLabel]
+    RP --> GB[NeonButton - Generate]
 ```
 
 ---
 
-## ✨ Enterprise-Grade Features
+## Themes
 
-<table>
-<tr>
-<td width="50%" valign="top">
+10 built-in themes selectable via `--theme` flag:
 
-### 🎨 Solid Apple-Style Aesthetics & Themes
-- **10 Dynamic Themes**: Fully supports terminal-driven UI switching incorporating palettes like `apple-dark`, `dracula`, `neon-cyber`, `solarized`, `ocean`, `matrix`, `synthwave`, `monokai`, `nord`, and `crimson`!
-- **Solid Dark Engine**: Relies on robust native hex colors ensuring there is zero lag or graphical rendering artifacts.
-- **Frameless Custom UI**: An authentic macOS-style traffic light window control system (Close, Min, Max) completely drag-enabled.
-- **Fluid Maximization**: Refactored structural matrices guaranteeing perfect internal constraints so UI elements do not disproportionately stretch on ultrawide monitors.
-- **Refined Typography**: Native system fonts tuned for maximum readability and a premium layout.
-
-</td>
-<td width="50%" valign="top">
-
-### 🔒 100% Secure & Offline
-- **Zero Telemetry**: Fully local, completely air-gapped processing engine.
-- **No Cloud Uploads**: We don’t harvest your contact cards or API payloads.
-- **Rapid Edge Compute**: Runs completely efficiently using CPU optimizations.
-- **GDPR Compliant**: Inherently safe by processing nothing remotely.
-</td>
-</tr>
-<tr>
-<td width="50%" valign="top">
-
-### 🎭 Quantum Gradients
-- **Four Dimensional Patterns**: Support for `Radial`, `Vertical`, `Horizontal`, and `Square` gradient flows.
-- **Tri-Color Mixing Environment**: Pick your deep Background layer, absolute Core color, and vibrating Edge color.
-- **Real-Time Preview**: An internal rendering window updates the quantum map dynamically.
-
-</td>
-<td width="50%" valign="top">
-
-### ⚡ Smart Execution
-- **CLI Control (`argparse`)**: Trigger the platform silently or with a specified configuration (e.g., `python src/qr.py --theme matrix`).
-- **High Error-Correction**: Defaults to `ERROR_CORRECT_H` ensuring scannability even with complex gradients.
-- **Crash Prevention Layer**: Checks for empty modules, null inputs, and unexpected exceptions instantly.
-
-</td>
-</tr>
-</table>
+| Theme | Background | Accent | Best For |
+|:------|:-----------|:-------|:---------|
+| `apple-dark` | `#121219` | Green→Blue gradient | Default, clean |
+| `dracula` | `#282a36` | `#bd93f9` | Purple lovers |
+| `neon-cyber` | `#000000` | Magenta→Cyan gradient | High contrast |
+| `solarized` | `#002b36` | `#268bd2` | Easy on eyes |
+| `ocean` | `#0f172a` | `#0ea5e9` | Cool tones |
+| `matrix` | `#0d0208` | `#00ff41` | Terminal aesthetic |
+| `synthwave` | `#2b213a` | Pink→Orange gradient | Retro vibes |
+| `monokai` | `#272822` | `#f92672` | Code editor fans |
+| `nord` | `#2e3440` | `#88c0d0` | Scandinavian minimal |
+| `crimson` | `#110000` | `#cc0000` | Dark red |
 
 ---
 
-## 📡 Supported Protocols
+## Setup
 
-<div align="center">
+### Prerequisites
 
-```text
-╔══════════════════════════════════════════════════════════════════════╗
-║                     10+ PROTOCOL SUPPORT MATRIX                      ║
-╚══════════════════════════════════════════════════════════════════════╝
-```
-
-| Icon | Protocol | Output Format | Ideal Use Case |
-|:----:|:---------|:--------------|:---------------|
-| 🔗 | **Website/URL** | `https://domain.com` | Standard links, portfolios, products. |
-| 📶 | **Wi-Fi** | `WIFI:S:SSID;T:WPA;P:password;;` | Hospitality, cafes, guest networks. |
-| 👤 | **vCard** | Contact VCF data | Business cards, digital networking. |
-| 💬 | **SMS** | `SMSTO:number:text` | Marketing opt-ins, quick texting. |
-| 📱 | **WhatsApp** | `wa.me/number?text=msg` | Business inquiries, fast chats. |
-| 💳 | **UPI** | `upi://pay?pa=id&pn=name` | Seamless Indian digital payments. |
-| 🌍 | **Geo Location**| `geo:lat,long` | Google Maps drop pins, tracking. |
-| 📝 | **Email & Text**| Standard text logic | Newsletters, basic memos. |
-
-</div>
+- Python 3.10 or higher
+- `pip` package manager
+- Git
 
 ---
 
-## 🚀 Quick Start & Installation
+### Windows
 
-### 📋 Prerequisites
-- **Python:** `3.10+` recommended
-- **OS:** Windows 10/11, macOS, Linux
-- **Memory:** Lightweight (~50 MB RAM active footprint)
-
-### 🔧 Developer Setup
-
-The most effective way to engage with the Galaxy QR Core is via a secure virtual environment.
-
-```bash
-# 1. Clone the repository into local space
+```powershell
 git clone https://github.com/RajTewari01/QR_CODE_GENERATOR_WITH_EXE.git
 cd QR_CODE_GENERATOR_WITH_EXE
 
-# 2. Deploy a new Quantum Space (Virtual Environment)
-python -m venv qr
+python -m venv venv
+venv\Scripts\activate
 
-# 3. Activate the Environment
-# ➡️ On Windows:
-qr\Scripts\activate
-# ➡️ On macOS/Linux:
-source qr/bin/activate
-
-# 4. Integrate core dependencies
 pip install -r requirements.txt
 
-# 5. Ignite the UI
-python src/qr.py
+python src/main.py
+python src/main.py --theme dracula
 ```
 
-### 🔨 Build Standalone Executables
-
-For automated deployment, use the newly integrated PyInstaller `.spec` build logic or the GitHub Actions CI pipeline.
+### macOS
 
 ```bash
-# Ensure PyInstaller is strictly installed
-pip install pyinstaller
+git clone https://github.com/RajTewari01/QR_CODE_GENERATOR_WITH_EXE.git
+cd QR_CODE_GENERATOR_WITH_EXE
 
-# Run the complex build pipeline specifically tailored for Galaxy QR
-pyinstaller UltimateQR.spec
+python3 -m venv venv
+source venv/bin/activate
+
+pip install -r requirements.txt
+
+python src/main.py
+python src/main.py --theme synthwave
 ```
-_All fully processed binaries will be safely deposited inside the local `dist/` directory, optimized for your host OS._
+
+### Linux (Debian/Ubuntu)
+
+```bash
+git clone https://github.com/RajTewari01/QR_CODE_GENERATOR_WITH_EXE.git
+cd QR_CODE_GENERATOR_WITH_EXE
+
+sudo apt-get install -y python3-venv python3-pyqt5 libgl1-mesa-glx
+
+python3 -m venv venv
+source venv/bin/activate
+
+pip install -r requirements.txt
+
+python src/main.py
+python src/main.py --theme matrix
+```
 
 ---
 
-## 📂 Internal Project Logistics
+## Building Executables
 
-```text
+### Windows
+
+```powershell
+venv\Scripts\activate
+pip install pyinstaller
+pyinstaller UltimateQR.spec
+# Output: dist\GalaxyQR.exe
+```
+
+### macOS
+
+```bash
+source venv/bin/activate
+pip install pyinstaller
+pyinstaller UltimateQR.spec
+# Output: dist/GalaxyQR.app
+```
+
+### Linux
+
+```bash
+source venv/bin/activate
+pip install pyinstaller
+pyinstaller UltimateQR.spec
+# Output: dist/GalaxyQR
+```
+
+The GitHub Actions workflow (`.github/workflows/build.yml`) runs this automatically on push for all three platforms. Artifacts are uploaded and retained for 7 days.
+
+---
+
+## CLI Reference
+
+```
+usage: main.py [-h] [--theme THEME]
+
+Galaxy QR Core Engine
+
+options:
+  -h, --help     show this help message and exit
+  --theme THEME  UI theme (default: apple-dark)
+
+Available themes:
+  apple-dark, dracula, neon-cyber, solarized, ocean,
+  matrix, synthwave, monokai, nord, crimson
+```
+
+---
+
+## Project Structure
+
+```
 QR_CODE_GENERATOR_WITH_EXE/
 ├── src/
-│   └── qr.py                  # 🚀 The Core Application Engine & Logic
-├── assets/                    # 🎨 Project Media & Iconography
-├── .github/workflows/         # 🤖 Automated cross-platform GitHub CI builds
-│   └── build.yml
-├── requirements.txt           # 📦 Primary Dependencies List
-├── UltimateQR.spec            # 🔨 Advanced PyInstaller Specifications
-├── LICENSE                    # 📜 Full Detailed Open Source License
-└── README.md                  # 📖 Internal Documentation Manifest
+│   ├── main.py              # CLI entrypoint
+│   ├── themes.py            # Theme palette definitions
+│   ├── engine.py            # QR generation logic + protocol formatter
+│   ├── ui_components.py     # Title bar, glass frame, buttons
+│   └── runner.py            # Main application window
+├── assets/                  # Project media files
+├── .github/
+│   └── workflows/
+│       └── build.yml        # Cross-platform CI/CD pipeline
+├── requirements.txt         # Python dependencies
+├── UltimateQR.spec          # PyInstaller build specification
+├── LICENSE                  # MIT License
+├── .gitignore               # Git exclusion rules
+└── README.md                # This file
 ```
 
 ---
 
-## 🤝 Contribute to the Galaxy
+## Dependencies
 
-We consistently welcome advanced Pull Requests and feature additions to the engine!
-
-1. Fork the framework and enter your local module (`git checkout -b feature/star-cluster`)
-2. Commit your enhanced architecture (`git commit -m "✨ Deployed highly advanced feature"`)
-3. Open a Pull Request! Great discoveries are always merged gracefully.
+| Package | Purpose |
+|:--------|:--------|
+| `PyQt5` | GUI framework |
+| `qrcode[pil]` | QR code generation with styled image support |
+| `Pillow` | Image processing and format conversion |
+| `pyinstaller` | Executable packaging (build-time only) |
 
 ---
 
-## 👨‍💻 Primary Architect
+## Contributing
+
+1. Fork this repository
+2. Create a feature branch: `git checkout -b feature/your-feature`
+3. Commit: `git commit -m "Add your feature"`
+4. Push: `git push origin feature/your-feature`
+5. Open a Pull Request
+
+Please follow the existing code structure. New features should be added to the appropriate pipeline module, not crammed into a single file.
+
+---
+
+## License
+
+MIT License — see [LICENSE](LICENSE) for full text.
+
+---
 
 <div align="center">
 
-### **Biswadeep Tewari**
-*Software Engineer • Architecting the Cosmos Locally.*
-
-[![GitHub](https://img.shields.io/badge/GitHub-RajTewari01-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/RajTewari01)
-[![Email](https://img.shields.io/badge/Email-tewari765@gmail.com-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:tewari765@gmail.com)
-
-**Made with 💜 and ☕**
-
-<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=150&section=footer&text=Thank%20You!&fontSize=50&fontColor=fff&animation=twinkling" alt="Footer"/>
+**Biswadeep Tewari** · [GitHub](https://github.com/RajTewari01) · [tewari765@gmail.com](mailto:tewari765@gmail.com)
 
 </div>
