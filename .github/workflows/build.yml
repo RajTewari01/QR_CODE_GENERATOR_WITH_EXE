@@ -2,7 +2,7 @@
 #  Galaxy QR Core — Continuous Integration
 #  Runs lint → smoke-test → build on every push / PR to main
 # ──────────────────────────────────────────────────────────────
-name: "🔬 CI Pipeline"
+name: "Python Engine CI/CD"
 
 on:
   push:

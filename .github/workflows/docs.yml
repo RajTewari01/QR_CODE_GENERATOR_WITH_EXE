@@ -2,7 +2,7 @@
 #  Galaxy QR Core — Documentation Quality
 #  Validates markdown formatting and link integrity on PRs
 # ──────────────────────────────────────────────────────────────
-name: "📖 Docs Quality"
+name: "Documentation Integrity"
 
 on:
   push:

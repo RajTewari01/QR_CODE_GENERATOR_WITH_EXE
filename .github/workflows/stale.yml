@@ -2,7 +2,7 @@
 #  Galaxy QR Core — Stale Issue / PR Management
 #  Auto-labels and closes idle issues and pull requests
 # ──────────────────────────────────────────────────────────────
-name: "🧹 Stale Cleanup"
+name: "Issues Cleanup"
 
 on:
   schedule:

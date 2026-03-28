@@ -3,7 +3,7 @@
 #  Triggers on version tags (v*), builds all platforms, creates
 #  a GitHub Release with attached binaries.
 # ──────────────────────────────────────────────────────────────
-name: "🚀 Release Pipeline"
+name: "Release Pipeline"
 
 on:
   push:

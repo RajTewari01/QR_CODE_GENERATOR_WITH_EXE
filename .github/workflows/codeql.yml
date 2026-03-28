@@ -2,7 +2,7 @@
 #  Galaxy QR Core — CodeQL Security Analysis
 #  Scans Python source for vulnerabilities on push and weekly
 # ──────────────────────────────────────────────────────────────
-name: "🛡️ CodeQL Security Scan"
+name: "Security Analysis"
 
 on:
   push:

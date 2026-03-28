@@ -2,7 +2,7 @@
 #  Galaxy QR Core — Dependency Review
 #  Audits new/changed dependencies in PRs for known vulns
 # ──────────────────────────────────────────────────────────────
-name: "📦 Dependency Review"
+name: "Dependency Audit"
 
 on:
   pull_request:
