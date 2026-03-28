@@ -1,8 +1,10 @@
-import sys
 import argparse
+import sys
+
 from PyQt5.QtWidgets import QApplication
-from themes import THEMES
+
 from runner import GalaxyWindow
+from themes import THEMES
 
 
 def main():

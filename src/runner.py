@@ -1,13 +1,15 @@
-import platform
 import os
-from PyQt5.QtWidgets import (QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
-                             QLabel, QComboBox, QLineEdit, QPushButton,
-                             QColorDialog, QScrollArea, QFrame)
+import platform
+
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QColor, QPixmap, QImage, QIcon
+from PyQt5.QtGui import QColor, QIcon, QImage, QPixmap
+from PyQt5.QtWidgets import (QColorDialog, QComboBox, QFrame, QHBoxLayout,
+                             QLabel, QLineEdit, QMainWindow, QPushButton,
+                             QScrollArea, QVBoxLayout, QWidget)
+
+from engine import INPUT_MAP, QrLogic
 from themes import THEMES
-from engine import QrLogic, INPUT_MAP
-from ui_components import CustomTitleBar, GlassPanel, PrimaryButton, FONT
+from ui_components import FONT, CustomTitleBar, GlassPanel, PrimaryButton
 
 # ── Windows acrylic blur ──────────────────────────────────
 _BLUR_AVAILABLE = False

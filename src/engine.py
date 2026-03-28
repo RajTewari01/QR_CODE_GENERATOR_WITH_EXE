@@ -1,10 +1,11 @@
 import urllib.parse
+
 import qrcode
 from qrcode.image.styledpil import StyledPilImage
-from qrcode.image.styles.colormasks import (
-    RadialGradiantColorMask, VerticalGradiantColorMask,
-    HorizontalGradiantColorMask, SquareGradiantColorMask
-)
+from qrcode.image.styles.colormasks import (HorizontalGradiantColorMask,
+                                            RadialGradiantColorMask,
+                                            SquareGradiantColorMask,
+                                            VerticalGradiantColorMask)
 from qrcode.image.styles.moduledrawers import RoundedModuleDrawer
 
 INPUT_MAP = {
