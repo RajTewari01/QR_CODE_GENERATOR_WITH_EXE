@@ -1,0 +1,64 @@
+name: ✨ Feature Request
+description: Suggest a new feature or improvement
+title: "[FEATURE] "
+labels: ["enhancement"]
+assignees: ["RajTewari01"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Have an idea? We'd love to hear it! Fill out the sections below.
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Feature Category
+      options:
+        - 🎨 New Theme
+        - 🔌 New Protocol
+        - 🖥️ UI / UX Improvement
+        - ⚙️ Engine Enhancement
+        - 📦 Build / Distribution
+        - 📖 Documentation
+        - 🔧 Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Statement
+      description: "What problem does this feature solve?"
+      placeholder: "I'm frustrated when... / It would be useful if..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: "How would you like this to work?"
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: "Any alternative solutions or workarounds?"
+
+  - type: textarea
+    id: mockup
+    attributes:
+      label: Mockup / Reference
+      description: "Attach any mockups, screenshots, or links to similar implementations"
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Checklist
+      options:
+        - label: I have searched existing issues/feature requests for duplicates
+          required: true
+        - label: I am willing to help implement this feature

@@ -1,0 +1,98 @@
+name: 🐛 Bug Report
+description: Report a bug in Galaxy QR Core
+title: "[BUG] "
+labels: ["bug", "triage"]
+assignees: ["RajTewari01"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting! Please fill out the sections below to help us investigate.
+
+  - type: input
+    id: os
+    attributes:
+      label: Operating System
+      description: "Which OS are you running?"
+      placeholder: "e.g., Windows 11, macOS 14 Sonoma, Ubuntu 24.04"
+    validations:
+      required: true
+
+  - type: input
+    id: python-version
+    attributes:
+      label: Python Version
+      description: "Output of `python --version`"
+      placeholder: "e.g., Python 3.10.12"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: installation
+    attributes:
+      label: Installation Method
+      options:
+        - Running from source (python src/main.py)
+        - Standalone executable (.exe / .app / binary)
+    validations:
+      required: true
+
+  - type: input
+    id: theme
+    attributes:
+      label: Theme
+      description: "Which theme were you using?"
+      placeholder: "e.g., apple-dark, dracula, neon-cyber"
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: "Clear description of what went wrong"
+      placeholder: "When I try to generate a Wi-Fi QR code, the app crashes..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      description: "Minimal steps to reproduce the behavior"
+      value: |
+        1. Launch with `python src/main.py --theme ...`
+        2. Select protocol '...'
+        3. Enter data '...'
+        4. Click 'INITIALIZE GENERATION'
+        5. See error
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: "What should have happened?"
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Error Output / Logs
+      description: "Paste any terminal output or traceback"
+      render: shell
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: "Attach screenshots if the bug is visual"
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Checklist
+      options:
+        - label: I have searched existing issues for duplicates
+          required: true
+        - label: I am running the latest version
+          required: true

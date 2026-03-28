@@ -1,0 +1,53 @@
+# ──────────────────────────────────────────────────────────────
+#  Galaxy QR Core — CodeQL Security Analysis
+#  Scans Python source for vulnerabilities on push and weekly
+# ──────────────────────────────────────────────────────────────
+name: "🛡️ CodeQL Security Scan"
+
+on:
+  push:
+    branches: [main, master]
+    paths: ["src/**"]
+  pull_request:
+    branches: [main, master]
+    paths: ["src/**"]
+  schedule:
+    - cron: "30 4 * * 1"   # Weekly — Monday 04:30 UTC
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: read
+  security-events: write
+
+concurrency:
+  group: codeql-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  analyze:
+    name: "🔎 CodeQL Analysis"
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [python]
+
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🛡️ Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+          queries: +security-extended,security-and-quality
+
+      - name: 🔎 Autobuild
+        uses: github/codeql-action/autobuild@v3
+
+      - name: 📊 Perform Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:${{ matrix.language }}"

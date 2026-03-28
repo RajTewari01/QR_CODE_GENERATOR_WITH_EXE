@@ -1,0 +1,64 @@
+# ──────────────────────────────────────────────────────────────
+#  Galaxy QR Core — Documentation Quality
+#  Validates markdown formatting and link integrity on PRs
+# ──────────────────────────────────────────────────────────────
+name: "📖 Docs Quality"
+
+on:
+  push:
+    branches: [main, master]
+    paths: ["**.md", "wiki/**"]
+  pull_request:
+    branches: [main, master]
+    paths: ["**.md", "wiki/**"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: docs-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  markdown-lint:
+    name: "📝 Markdown Lint"
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 📝 Lint Markdown Files
+        uses: DavidAnson/markdownlint-cli2-action@v19
+        with:
+          globs: |
+            **/*.md
+            !node_modules/**
+          config: |
+            {
+              "default": true,
+              "MD013": false,
+              "MD033": false,
+              "MD041": false,
+              "MD024": { "siblings_only": true }
+            }
+
+  link-check:
+    name: "🔗 Link Validation"
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🔗 Check Links
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: >-
+            --verbose
+            --no-progress
+            --accept 100..=399
+            --exclude-mail
+            --exclude "capsule-render.vercel.app"
+            --exclude "img.shields.io"
+            "**/*.md"
+          fail: false

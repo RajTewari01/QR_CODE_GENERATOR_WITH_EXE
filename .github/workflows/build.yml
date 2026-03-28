@@ -1,76 +1,175 @@
-name: 🚀 Build and Release Galaxy QR Core
+# ──────────────────────────────────────────────────────────────
+#  Galaxy QR Core — Continuous Integration
+#  Runs lint → smoke-test → build on every push / PR to main
+# ──────────────────────────────────────────────────────────────
+name: "🔬 CI Pipeline"
 
 on:
   push:
-    branches: [ "main", "master" ]
-    paths-ignore:
-      - '**.md'
-      - '.gitignore'
+    branches: [main, master]
+    paths-ignore: ["**.md", "docs/**", "wiki/**", ".github/ISSUE_TEMPLATE/**"]
   pull_request:
-    branches: [ "main", "master" ]
+    branches: [main, master]
   workflow_dispatch:
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+# ── Jobs ─────────────────────────────────────────────────────
+
 jobs:
+  # ── 1. Lint ──────────────────────────────────────────────
+  lint:
+    name: "🔍 Code Quality"
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: 📦 Install Linters
+        run: pip install flake8 flake8-bugbear isort
+
+      - name: 🔍 Flake8 — Style & Bugs
+        run: |
+          flake8 src/ \
+            --max-line-length 120 \
+            --extend-ignore E203,W503 \
+            --statistics \
+            --count \
+            --show-source
+
+      - name: 📂 isort — Import Order
+        run: isort --check-only --diff src/
+
+  # ── 2. Test ──────────────────────────────────────────────
+  test:
+    name: "🧪 Smoke Test"
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          cache: pip
+          cache-dependency-path: requirements.txt
+
+      - name: 🐧 System Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            libgl1 libxcb-xinerama0 libxkbcommon-x11-0 \
+            libxcb-icccm4 libxcb-image0 libxcb-keysyms1 \
+            libxcb-randr0 libxcb-render-util0 libxcb-shape0 \
+            libglib2.0-0 libdbus-1-3
+
+      - name: 📦 Install Requirements
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: 🧪 Module Import Verification
+        run: |
+          cd src
+          python -c "
+          import themes, engine, ui_components
+          from themes import THEMES
+          from engine import QrLogic, INPUT_MAP
+          print(f'✔ {len(THEMES)} themes loaded')
+          print(f'✔ {len(INPUT_MAP)} protocols registered')
+          print('✔ All modules import cleanly')
+          "
+
+      - name: 🧪 CLI Argparse Verification
+        run: python src/main.py --help
+
+      - name: 🧪 Engine Unit Validation
+        run: |
+          cd src
+          python -c "
+          from engine import QrLogic
+          qr = QrLogic()
+          # Protocol format tests
+          assert qr.format_data('Website/URL', ['https://example.com']) == 'https://example.com'
+          assert qr.format_data('Wi-Fi Config', ['MyNet', 'pass123', 'WPA']) == 'WIFI:S:MyNet;T:WPA;P:pass123;;'
+          assert qr.format_data('Send SMS', ['1234', 'Hello']) == 'SMSTO:1234:Hello'
+          assert 'mailto:' in qr.format_data('Send Email', ['a@b.com', 'Hi', 'Body'])
+          assert 'wa.me/' in qr.format_data('WhatsApp Msg', ['+91123', 'Hey'])
+          assert 'upi://pay' in qr.format_data('UPI (India)', ['user@upi', 'Name'])
+          print('✔ All 6 protocol format tests passed')
+
+          # Image generation test
+          img = qr.generate_image('https://test.com', 'Radial', ['#ffffff', '#00f260', '#0575e6'])
+          assert img.size[0] > 0 and img.size[1] > 0
+          print(f'✔ QR image generated: {img.size[0]}×{img.size[1]}')
+          "
+
+  # ── 3. Build ─────────────────────────────────────────────
   build:
-    name: 🔨 Build on ${{ matrix.os }}
+    name: "🔨 Build · ${{ matrix.os }}"
+    needs: test
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, macos-latest, ubuntu-latest]
+        include:
+          - os: windows-latest
+            artifact_name: GalaxyQR-Windows
+            artifact_path: dist/GalaxyQR.exe
+          - os: macos-latest
+            artifact_name: GalaxyQR-macOS
+            artifact_path: dist/GalaxyQR.app
+          - os: ubuntu-latest
+            artifact_name: GalaxyQR-Linux
+            artifact_path: dist/GalaxyQR
 
     steps:
-    - name: 📥 Checkout Repository
-      uses: actions/checkout@v4
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
 
-    - name: 🐍 Set up Python 3.10
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.10'
-        cache: 'pip' # caching pip dependencies
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          cache: pip
+          cache-dependency-path: requirements.txt
 
-    - name: 🐧 Install System Dependencies (Linux)
-      if: runner.os == 'Linux'
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y libgl1 libxcb-xinerama0
+      - name: 🐧 System Dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            libgl1 libxcb-xinerama0 libxkbcommon-x11-0 \
+            libxcb-icccm4 libxcb-image0 libxcb-keysyms1 \
+            libxcb-randr0 libxcb-render-util0 libxcb-shape0 \
+            libglib2.0-0 libdbus-1-3
 
-    - name: 📦 Install Python Requirements
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-      shell: bash
+      - name: 📦 Install Requirements
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+        shell: bash
 
-    - name: 🧪 Verify Argparse Execution
-      run: |
-        python src/main.py --help
-      shell: bash
+      - name: 🔨 PyInstaller Build
+        run: pyinstaller UltimateQR.spec
+        shell: bash
 
-    - name: 🔨 Generate PyInstaller Executable
-      run: |
-        pyinstaller UltimateQR.spec
-      shell: bash
-
-    - name: 📤 Upload Artifact - Windows
-      if: runner.os == 'Windows'
-      uses: actions/upload-artifact@v4
-      with:
-        name: GalaxyQR-Windows-Standalone
-        path: dist/GalaxyQR.exe
-        retention-days: 7
-
-    - name: 📤 Upload Artifact - macOS
-      if: runner.os == 'macOS'
-      uses: actions/upload-artifact@v4
-      with:
-        name: GalaxyQR-macOS-AppBundle
-        path: dist/GalaxyQR.app
-        retention-days: 7
-
-    - name: 📤 Upload Artifact - Linux
-      if: runner.os == 'Linux'
-      uses: actions/upload-artifact@v4
-      with:
-        name: GalaxyQR-Linux-Executable
-        path: dist/GalaxyQR
-        retention-days: 7
+      - name: 📤 Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact_name }}
+          path: ${{ matrix.artifact_path }}
+          retention-days: 14
+          if-no-files-found: error
