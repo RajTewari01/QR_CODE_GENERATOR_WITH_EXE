@@ -4,8 +4,8 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QColor, QMouseEvent
 
 
-# ── Apple system font stack ──────────────────────────────────
-FONT = '".AppleSystemUIFont", -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif'
+# ── Apple premium font stack ──────────────────────────────────
+FONT = '".AppleSystemUIFont", -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif'
 
 
 class TrafficLightButton(QPushButton):
@@ -15,19 +15,19 @@ class TrafficLightButton(QPushButton):
         super().__init__(parent)
         self.setFixedSize(12, 12)
         self.setCursor(Qt.PointingHandCursor)
-        self._icon = icon_char
         self.setStyleSheet(f"""
             QPushButton {{
                 background-color: {color};
                 border-radius: 6px;
-                border: 0.5px solid rgba(0,0,0,0.2);
+                border: 0.5px solid rgba(0,0,0,0.25);
                 font-size: 8px;
-                font-weight: bold;
+                font-weight: 800;
+                font-family: {FONT};
                 color: transparent;
             }}
             QPushButton:hover {{
                 background-color: {hover_color};
-                color: rgba(0,0,0,0.6);
+                color: rgba(0,0,0,0.5);
             }}
         """)
         if icon_char:
@@ -35,18 +35,17 @@ class TrafficLightButton(QPushButton):
 
 
 class CustomTitleBar(QWidget):
-    """Frameless title bar with macOS traffic lights and centered title."""
+    """Frameless title bar with macOS traffic lights."""
 
-    def __init__(self, parent, theme_key, theme):
+    def __init__(self, parent, theme_key):
         super().__init__(parent)
         self.parent_window = parent
-        self.theme = theme
         self.setFixedHeight(38)
         self.layout_box = QHBoxLayout(self)
         self.layout_box.setContentsMargins(16, 0, 16, 0)
         self.layout_box.setSpacing(0)
 
-        # Traffic lights — Big Sur style sizing
+        # Traffic lights (macOS dimensions)
         self.btn_close = TrafficLightButton("#FF5F56", "#FF5F56", "✕", self)
         self.btn_min = TrafficLightButton("#FFBD2E", "#FFBD2E", "−", self)
         self.btn_max = TrafficLightButton("#27C93F", "#27C93F", "+", self)
@@ -61,19 +60,20 @@ class CustomTitleBar(QWidget):
         self.layout_box.addSpacing(8)
         self.layout_box.addWidget(self.btn_max)
 
-        self.title_label = QLabel(f"Galaxy QR", self)
+        self.title_label = QLabel(f"Galaxy QR Core", self)
         self.title_label.setStyleSheet(f"""
-            color: rgba(255, 255, 255, 0.85);
+            color: rgba(255, 255, 255, 0.7);
             font-weight: 500;
             font-size: 13px;
             font-family: {FONT};
+            letter-spacing: 0.5px;
         """)
         self.title_label.setAlignment(Qt.AlignCenter)
 
         self.layout_box.addStretch()
         self.layout_box.addWidget(self.title_label)
         self.layout_box.addStretch()
-        self.layout_box.addSpacing(56) # Offset to keep title centered
+        self.layout_box.addSpacing(56) # Keep label dead center
 
         self._is_tracking = False
         self._start_pos = None
@@ -98,51 +98,62 @@ class CustomTitleBar(QWidget):
             self._is_tracking = False
 
 
-class MacContainer(QFrame):
-    """Standard macOS grouped container style."""
+class GlassPanel(QFrame):
+    """Premium frosted glass panel with mirror border."""
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setObjectName("MacContainer")
+        self.setObjectName("GlassPanel")
+        
+        # Apple mirror glass aesthetic: very subtle translucent fill, glossy inner border
         self.setStyleSheet(f"""
-            QFrame#MacContainer {{
-                background-color: #1E1E1E; /* System gray 6 dark */
+            QFrame#GlassPanel {{
+                background-color: rgba(20, 20, 25, 0.45);
                 border: 1px solid rgba(255, 255, 255, 0.1);
-                border-radius: 10px;
+                border-top: 1px solid rgba(255, 255, 255, 0.2);
+                border-radius: 12px;
             }}
         """)
+        
+        # Soft environmental shadow
         shadow = QGraphicsDropShadowEffect(self)
-        shadow.setBlurRadius(20)
-        shadow.setColor(QColor(0, 0, 0, 80))
-        shadow.setOffset(0, 5)
+        shadow.setBlurRadius(40)
+        shadow.setColor(QColor(0, 0, 0, 100))
+        shadow.setOffset(0, 8)
         self.setGraphicsEffect(shadow)
 
 
 class PrimaryButton(QPushButton):
-    """macOS primary action button (solid blue accent)."""
+    """Premium macOS generic generation button."""
 
     def __init__(self, text, parent=None):
         super().__init__(text, parent)
         self.setCursor(Qt.PointingHandCursor)
-        self.setFixedHeight(28)
+        self.setFixedHeight(36)
+        
+        # Apple SF Pro Blue Gradient style
         self.setStyleSheet(f"""
             QPushButton {{
-                background-color: #0A84FF; /* macOS Dark Mode Blue */
+                background-color: #0A84FF;
                 color: white;
-                font-weight: 500;
+                font-weight: 600;
                 font-family: {FONT};
                 font-size: 13px;
-                border: none;
-                border-radius: 5px;
+                letter-spacing: 0.5px;
+                border: 1px solid rgba(0, 0, 0, 0.15);
+                border-top: 1px solid rgba(255, 255, 255, 0.25);
+                border-radius: 8px;
             }}
             QPushButton:hover {{
-                background-color: #329AFF;
+                background-color: #1A8CFF;
             }}
             QPushButton:pressed {{
-                background-color: #006ADA;
-            }}
-            QPushButton:disabled {{
-                background-color: rgba(255, 255, 255, 0.1);
-                color: rgba(255, 255, 255, 0.25);
+                background-color: #0074E8;
             }}
         """)
+        
+        shadow = QGraphicsDropShadowEffect(self)
+        shadow.setBlurRadius(15)
+        shadow.setColor(QColor(10, 132, 255, 80))
+        shadow.setOffset(0, 4)
+        self.setGraphicsEffect(shadow)
